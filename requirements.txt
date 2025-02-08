@@ -6,3 +6,4 @@ langchain_huggingface
 transformers
 torch
 pypdf
+faiss-cpu
