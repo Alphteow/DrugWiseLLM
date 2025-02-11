@@ -4,8 +4,15 @@ from langchain_community.vectorstores import Chroma
 from langchain_openai import OpenAIEmbeddings
 from langchain_openai import ChatOpenAI
 from langchain.prompts import ChatPromptTemplate
+import os
+from dotenv import load_dotenv
+import openai
+
+load_dotenv()
 
 CHROMA_PATH = "chroma"
+
+openai.api_key = os.environ['OPENAI_API_KEY']
 
 PROMPT_TEMPLATE = """
 Answer the question based only on the following context:
@@ -30,9 +37,9 @@ def main():
     db = Chroma(persist_directory=CHROMA_PATH, embedding_function=embedding_function)
 
     # Search the DB.
-    results = db.similarity_search_with_relevance_scores(query_text, k=3)
+    results = db.similarity_search_with_relevance_scores(query_text, k=5)
     if len(results) == 0 or results[0][1] < 0.7:
-        print(f"Unable to find matching results.")
+        print(f"\n\nUnable to find matching results.")
         return
 
     context_text = "\n\n---\n\n".join([doc.page_content for doc, _score in results])
