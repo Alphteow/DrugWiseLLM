@@ -9,6 +9,8 @@ import openai
 from dotenv import load_dotenv
 import os
 import shutil
+from pymongo import MongoClient
+# from langchain.embeddings import OpenAIEmbeddings
 
 # Load environment variables. Assumes that project contains .env file with API keys
 load_dotenv()
@@ -28,7 +30,8 @@ def main():
 def generate_data_store():
     documents = load_documents()
     chunks = split_text(documents)
-    save_to_chroma(chunks)
+    save_to_mongodb(chunks)
+    # save_to_chroma(chunks)
 
 
 def load_documents():
@@ -82,6 +85,40 @@ def save_to_chroma(chunks: list[Document]):
     )
     db.persist()
     print(f"Saved {len(chunks)} chunks to {CHROMA_PATH}.")
+
+# MongoDB connection details
+MONGO_URI = "mongodb://localhost:27017"
+DB_NAME = "DrugWise"
+COLLECTION_NAME = "document_embeddings"
+
+def save_to_mongodb(chunks: list[Document]):
+    # Connect to MongoDB
+    client = MongoClient(MONGO_URI)
+    db = client[DB_NAME]
+    collection = db[COLLECTION_NAME]
+
+    # Clear the collection if it already exists
+    collection.delete_many({})
+
+    # Initialize OpenAI embeddings
+    embeddings = OpenAIEmbeddings()
+
+    # Process and store each chunk
+    for chunk in chunks:
+        # Generate embedding for the chunk
+        embedding = embeddings.embed_query(chunk.page_content)
+
+        # Prepare the document to insert into MongoDB
+        document = {
+            "content": chunk.page_content,
+            "metadata": chunk.metadata,
+            "embedding": embedding
+        }
+
+        # Insert into MongoDB
+        collection.insert_one(document)
+
+    print(f"Saved {len(chunks)} chunks to MongoDB collection '{COLLECTION_NAME}'.")
 
 
 if __name__ == "__main__":
