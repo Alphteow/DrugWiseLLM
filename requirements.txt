@@ -16,5 +16,6 @@ unstructured # Document loading
 chromadb # Vector storage
 openai # For embeddings
 tiktoken # For embeddings 
+pymongo
 
 # install markdown depenendies with: `pip install "unstructured[md]"` after install the requirements file. Leave this line commented out. 

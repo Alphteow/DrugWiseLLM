@@ -51,13 +51,13 @@ def load_documents():
             documents.extend(loader.load())
 
     # Process CSV files
-    print("Loading CSV documents...")
-    csv_directory = os.path.join(data_directory, "csv")
-    for filename in os.listdir(csv_directory):
-        if filename.endswith(".csv"):
-            file_path = os.path.join(csv_directory, filename)
-            loader = CSVLoader(file_path)  # Load CSV with metadata (filename, row number)
-            documents.extend(loader.load())
+    # print("Loading CSV documents...")
+    # csv_directory = os.path.join(data_directory, "csv")
+    # for filename in os.listdir(csv_directory):
+    #     if filename.endswith(".csv"):
+    #         file_path = os.path.join(csv_directory, filename)
+    #         loader = CSVLoader(file_path)  # Load CSV with metadata (filename, row number)
+    #         documents.extend(loader.load())
     return documents
 
 
@@ -104,7 +104,7 @@ def save_to_mongodb(chunks: list[Document]):
     embeddings = OpenAIEmbeddings()
 
     # Process and store each chunk
-    for chunk in chunks:
+    for i, chunk in enumerate(chunks, start=1):  # Use enumerate to track the index
         # Generate embedding for the chunk
         embedding = embeddings.embed_query(chunk.page_content)
 
@@ -117,6 +117,10 @@ def save_to_mongodb(chunks: list[Document]):
 
         # Insert into MongoDB
         collection.insert_one(document)
+
+        # Print status every 1000 chunks
+        if i % 1000 == 0:
+            print(f"{i} chunks have been inserted into MongoDB.")
 
     print(f"Saved {len(chunks)} chunks to MongoDB collection '{COLLECTION_NAME}'.")
 
