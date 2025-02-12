@@ -46,9 +46,6 @@ def save_to_mongodb(data):
     db = client[DB_NAME]
     collection = db[COLLECTION_NAME]
 
-    # Clear the collection if needed (optional)
-    # collection.delete_many({})
-
     # Insert the data into MongoDB
     collection.insert_one(data)
 
@@ -59,17 +56,28 @@ def process_csv_and_store_embeddings(csv_file):
     # Read the CSV file
     df = pd.read_csv(csv_file)
 
+    client = MongoClient(MONGO_URI)
+    db = client[DB_NAME]
+    collection = db[COLLECTION_NAME]
+
+    # Clear the collection if needed (optional)
+    collection.delete_many({})
+
     # Initialize OpenAI embeddings
     embeddings = OpenAIEmbeddings()
+
+    bad_url_counter = 0
 
     # Iterate through the 'url' column
     for index, row in df.iterrows():
         url = row['url']
-        print(f"Processing URL: {url}")
+        # print(f"Processing URL: {url}")
 
         # Fetch the article content
         content = fetch_article_content(url)
         if not content:
+            bad_url_counter += 1
+            print(f"Could not fetch {url}")
             continue  # Skip if content could not be fetched
 
         # Generate embeddings for the content
@@ -85,9 +93,12 @@ def process_csv_and_store_embeddings(csv_file):
         # Save to MongoDB
         save_to_mongodb(document)
 
-        # Print status every 10 articles
-        if (index + 1) % 10 == 0:
-            print(f"{index + 1} articles processed and stored in MongoDB.")
+        # Print status every 100 articles
+        if (index + 1) % 100 == 0:
+            print(f"{index + 1} articles processed.")
+            print(f"{index-bad_url_counter+1} articles saved to mongodb.")
+
+        
 
     print("All articles processed and stored in MongoDB.")
 

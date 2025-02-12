@@ -1,0 +1,63 @@
+Basic Understanding of DDIs:
+"What are drug-drug interactions, and why are they clinically significant?"
+"Explain the role of cytochrome P450 enzymes in drug-drug interactions."
+
+Specific Drug Interactions:
+"What are the potential interactions between warfarin and cannabis?"
+"How does the co-administration of colchicine and clarithromycin affect patient safety?"
+
+Mechanisms of Interaction:
+"Describe how P-glycoprotein influences drug-drug interactions."
+"What is the role of CYP3A4 in the metabolism of drugs, and how can its inhibition lead to interactions?"
+
+Clinical Scenarios:
+"A patient is taking both digoxin and a P-glycoprotein inhibitor. What are the potential risks?"
+"How should a clinician manage a patient on antiretroviral therapy who is prescribed psychotropic medications?"
+
+Evaluation of Risk Factors:
+"What factors increase the likelihood of clinically significant drug-drug interactions in elderly patients?"
+"How does polypharmacy contribute to the risk of adverse drug interactions?"
+
+
+Advanced Prompts
+Case-Based Questions:
+"A 65-year-old patient on amiodarone is prescribed simvastatin. What precautions should be taken to avoid adverse interactions?"
+"Describe the potential interactions and management strategies for a breast cancer patient on CDK4/6 inhibitors and antidepressants."
+
+Predictive and Computational Approaches:
+"How can machine learning models be used to predict drug-drug interactions?"
+"Explain the use of graph-based methods in identifying potential DDIs."
+
+Special Populations:
+"What are the challenges of managing drug-drug interactions in pediatric patients?"
+"Discuss the implications of DDIs in patients with HIV and cancer."
+
+Emerging Topics:
+"What are the potential drug-drug interactions associated with cannabidiol (CBD) use?"
+"How do transporter-mediated interactions differ from enzyme-mediated interactions?"
+
+Evaluation of System Performance:
+"Provide a summary of the most common drug-drug interactions involving CYP3A4 inhibitors."
+"List the key considerations for managing DDIs in patients undergoing chemoradiotherapy."
+
+
+Testing Specific Capabilities
+Accuracy of Retrieval:
+"Retrieve and summarize the findings of the study on the interaction between fluticasone and ritonavir."
+"What are the key findings from the article on transporter-mediated drug-drug interactions?"
+
+Synthesis and Explanation:
+"Explain the clinical significance of drug-drug interactions in patients with polypharmacy."
+"Summarize the mechanisms by which antiepileptic drugs like brivaracetam avoid significant DDIs."
+
+Actionable Recommendations:
+"What steps should be taken to minimize the risk of DDIs in patients on multiple medications?"
+"Provide guidelines for managing DDIs in patients taking direct-acting antivirals for hepatitis C."
+
+Handling Ambiguity:
+"What are the potential interactions between a new drug metabolized by CYP3A4 and a strong CYP3A4 inhibitor?"
+"How should a clinician approach a suspected DDI when the mechanism is unclear?"
+
+Critical Analysis:
+"Critique the methodology used in studies predicting DDIs using computational models."
+"Evaluate the effectiveness of current tools for detecting DDIs in clinical practice."

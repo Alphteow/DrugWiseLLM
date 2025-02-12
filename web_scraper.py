@@ -210,8 +210,8 @@ if __name__ == "__main__":
     print("Starting...")
     parser = argparse.ArgumentParser(description='Asynchronous PubMed Scraper')
     parser.add_argument('--pages', type=int, default=None, help='Specify number of pages to scrape for EACH keyword.')
-    parser.add_argument('--start', type=int, default=2019, help='Specify start year for publication date range to scrape.')
-    parser.add_argument('--stop', type=int, default=2020, help='Specify stop year for publication date range to scrape.')
+    parser.add_argument('--start', type=int, default=2020, help='Specify start year for publication date range to scrape.')
+    parser.add_argument('--stop', type=int, default=2025, help='Specify stop year for publication date range to scrape.')
     parser.add_argument('--output', type=str, default='articles.csv', help='Choose output file name.')
     args = parser.parse_args()
     if args.output[-4:] != '.csv': args.output += '.csv'

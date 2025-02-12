@@ -17,13 +17,15 @@ COLLECTION_NAME = "document_embeddings"
 openai.api_key = os.environ['OPENAI_API_KEY']
 
 PROMPT_TEMPLATE = """
-Answer the question based only on the following context:
+You are an expert assistant specializing in drug-drug interactions (DDIs). Your role is to provide accurate, concise, and clinically relevant answers to user queries based on the provided context. You must only use the information retrieved from the context to answer the question and avoid adding any external knowledge or assumptions. Your answers should be clear, actionable, and focused on addressing the user's query.
+
+Answer the question based only on the following context. Incorporate the respective full URLs naturally into your response:
 
 {context}
 
 ---
 
-Answer the question based on the above context: {question}
+Answer the question based on the above context returning the respective full url: {question}
 """
 
 
@@ -46,17 +48,22 @@ def main():
         print(f"\n\nUnable to find matching results.")
         return
 
+    for i, (doc, score) in enumerate(results):
+        print(f"{i+1}. Document ID: {doc['url']}, Similarity Score: {score:.4f}")
+
     # Prepare the context for the prompt
-    context_text = "\n\n---\n\n".join([doc["content"] for doc, _score in results])
+    context_text = "\n\n---\n\n".join(
+    [f"{doc['content']} (Full URL: {doc['url']})" for doc, _score in results]
+    )
     prompt_template = ChatPromptTemplate.from_template(PROMPT_TEMPLATE)
     prompt = prompt_template.format(context=context_text, question=query_text)
     print(prompt)
 
     # Generate response using ChatOpenAI
     model = ChatOpenAI()
-    response_text = model.predict(prompt)
+    response_text = model.invoke(prompt)
 
-    print(f"Response: {response_text}")
+    print(f"Response: {response_text.content}")
 
 
 def query_mongodb(query_embedding, top_k=5):
@@ -67,13 +74,6 @@ def query_mongodb(query_embedding, top_k=5):
     client = MongoClient(MONGO_URI)
     db = client[DB_NAME]
     collection = db[COLLECTION_NAME]
-    
-    # Print the first few documents in the collection
-    for doc in collection.find().limit(5):
-        print("Content:", doc["content"][:200])  # Print the first 200 characters of the content
-        print("Embedding:", doc["embedding"][:5])  # Print the first 5 values of the embedding
-        print("Metadata:", doc.get("metadata", {}))
-        print("-" * 50)
 
     # Fetch all documents from MongoDB
     documents = list(collection.find({}))
